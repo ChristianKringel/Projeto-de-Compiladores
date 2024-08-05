@@ -1,0 +1,11 @@
+void main(){
+    newVar boolean novoTeste;
+    newVar int novoTesteInt; 
+    novoTesteInt = 10.22;
+    novoTesteInt2 = 30.20; 
+    novoTesteInt + novoTesteInt2;
+    novoTesteInt2 / novoTesteInt;
+    novoTeste = true; 
+    printOut novoTesteInt; 
+    printOut novoTeste;
+}
