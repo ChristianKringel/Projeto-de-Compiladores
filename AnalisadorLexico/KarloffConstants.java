@@ -45,27 +45,35 @@ public interface KarloffConstants {
   /** RegularExpression Id. */
   int ID = 22;
   /** RegularExpression Id. */
-  int ATRIBUICAO = 23;
+  int CARACTERE = 23;
   /** RegularExpression Id. */
-  int PONTOVIRGULA = 24;
+  int ATRIBUICAO = 24;
   /** RegularExpression Id. */
-  int SOMA = 25;
+  int PONTOVIRGULA = 25;
   /** RegularExpression Id. */
-  int SUB = 26;
+  int PONTO = 26;
   /** RegularExpression Id. */
-  int MULT = 27;
+  int SOMA = 27;
   /** RegularExpression Id. */
-  int DIV = 28;
+  int SUB = 28;
   /** RegularExpression Id. */
-  int AND = 29;
+  int MULT = 29;
   /** RegularExpression Id. */
-  int OR = 30;
+  int DIV = 30;
   /** RegularExpression Id. */
-  int MAIORQUE = 31;
+  int AND = 31;
   /** RegularExpression Id. */
-  int MENORQUE = 32;
+  int OR = 32;
   /** RegularExpression Id. */
-  int IGUAL = 33;
+  int MAIORQUE = 33;
+  /** RegularExpression Id. */
+  int MENORQUE = 34;
+  /** RegularExpression Id. */
+  int IGUAL = 35;
+  /** RegularExpression Id. */
+  int SUBLINHADO = 36;
+  /** RegularExpression Id. */
+  int VIRGULA = 37;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -95,8 +103,10 @@ public interface KarloffConstants {
     "\"return\"",
     "<NUM>",
     "<ID>",
+    "<CARACTERE>",
     "\"=\"",
     "\";\"",
+    "\".\"",
     "\"+\"",
     "\"-\"",
     "\"*\"",
@@ -106,6 +116,10 @@ public interface KarloffConstants {
     "\">\"",
     "\"<\"",
     "\"==\"",
+    "\"_\"",
+    "\",\"",
+    "\"\"",
+    "\"E\"",
   };
 
 }

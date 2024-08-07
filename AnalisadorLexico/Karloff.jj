@@ -181,7 +181,7 @@ void Func() :
 void FuncStart() :
 {}
 {
-  <FUNCTION> Tipo() TokenID() <APARENTESES> (ListaArg())? <FPARENTESES> <ACHAVES> (Vardecl())? (SeqComandos())? <FCHAVES>
+  <FUNCTION> Tipo() TokenID() <APARENTESES> (ListaArg())? <FPARENTESES> <ACHAVES> (Vardecl() | "") SeqComandos() <FCHAVES>
 }
 
 
@@ -219,11 +219,10 @@ void Expoente_Opcional() :
   ("E" (<SOMA> | <SUB>)? Digitos())?
 }
 
-// digitos facao_opcional expoente_opcional
 void NumLiteral() :
 {}
 {
-  Digitos() Facao_Opcional() (Expoente_Opcional())?
+  Digitos() Facao_Opcional() (Expoente_Opcional() | "")
 }
 
 void ReadInput() :
