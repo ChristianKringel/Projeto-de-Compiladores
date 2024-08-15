@@ -52,7 +52,11 @@ TOKEN :
 | <MENORQUE: "<">
 | <IGUAL: "==">
 | <SUBLINHADO: "_">
+| <READINPUT: "readInput">
 | <VIRGULA: ","> 
+| <DIGITOS: (["0"-"9"])>
+|<TOKEN_LITERAL: ((["0"-"9"])+) (("."(["0"-"9"])+)? ("E"("+"|"-")? (["0"-"9"])+))?>
+|<TOKEN_ID: <CARACTERE> (<CARACTERE>|<DIGITOS>)*((<CARACTERE>|<DIGITOS>)+)* ("_")*>
 }
 
 void Karloff() :
@@ -70,20 +74,26 @@ void Main() :
 void Comando() :
 {}
 {
-    (TokenID() <IGUAL> Exp() <PONTOVIRGULA>
-    | TokenID() <APARENTESES> (ListaExp())? <FPARENTESES> <PONTOVIRGULA>
+    <TOKEN_ID> ComandoL()
+    | <TOKEN_ID> <APARENTESES> (ListaExp())? <FPARENTESES> <PONTOVIRGULA>
     | <IF> Exp() <THEN> <ACHAVES> SeqComandos() <FCHAVES> <PONTOVIRGULA>
     | <WHILE> Exp() <ACHAVES> SeqComandos() <FCHAVES> <PONTOVIRGULA>
-    | TokenID() <IGUAL> ReadInput() <APARENTESES> <FPARENTESES> <PONTOVIRGULA>
+    | <TOKEN_ID> <IGUAL> <READINPUT> <APARENTESES> <FPARENTESES> <PONTOVIRGULA>
     | <RETURN> Exp() <PONTOVIRGULA>
-    | <PRINTOUT> Exp() <PONTOVIRGULA> )
+    | <PRINTOUT> Exp() <PONTOVIRGULA> 
+}
+
+void ComandoL() :
+{}
+{
+  <ATRIBUICAO> Exp() <PONTOVIRGULA> | <APARENTESES> (ListaExp())? <FPARENTESES> <PONTOVIRGULA>
 }
 
 // VARDECL -> ("newVar" TIPO TOKEN_id ";")*
 void Vardecl() :
 {}
 {
-  (<NEWVAR> Tipo() TokenID() <PONTOVIRGULA>)*
+  (<NEWVAR> Tipo() <TOKEN_ID> <PONTOVIRGULA>)*
 }
 
 // TIPO -> "float" | "boolean" | "void"
@@ -100,7 +110,6 @@ void Boolean() :
 }
 
 
-
 // SEQCOMANDOS -> SEQCOMANDOS COMANDO | vazio
 void SeqComandos() :
 {}
@@ -115,36 +124,18 @@ void Exp() :
   <APARENTESES> Exp() Op() Exp() <FPARENTESES> | Fator()
 }
 
-// FATOR -> TOKEN_id | TOKEN_id "(" LISTAEXP? ")" | TOKEN_numliteral | "true" | "false"
 void Fator() :
 {}
 {
-  TokenID()
-  | TokenID() <APARENTESES> (ListaExp())? <FPARENTESES>
-  | NumLiteral()
-  | <TRUE>
-  | <FALSE>
+  <TOKEN_ID> FatorL() | <TOKEN_LITERAL> | <TRUE> | <FALSE> 
 }
 
-// TOKEN_id -> letra letraoudigito* finalsublinhado*
-void TokenID() :
+void FatorL() :
 {}
 {
-  <CARACTERE> (LetraOuDigito() )* (FinalSublinhado() )*
+  (<APARENTESES> ListaExp() <FPARENTESES>)? 
 }
 
-void LetraOuDigito() :
-{}
-{
-  <CARACTERE> | <NUM>
-}
-
-// finalsublinhado -> _letraoudigito+
-void FinalSublinhado() :
-{}
-{
-  <SUBLINHADO> (LetraOuDigito() )+
-}
 
 // OP -> "+" | "-" | "*" | "/" | "&" | "|" | "<" | ">" | "=="
 void Op() :
@@ -165,7 +156,13 @@ void Op() :
 void ListaExp() :
 {}
 {
-  Exp() (<VIRGULA> Exp() )*
+  Exp() ListaExpL()
+}
+
+void ListaExpL() :
+{}
+{
+  (<VIRGULA> Exp() ListaExpL())?
 }
 
 // FUNC -> FUNC "fun" TIPO TOKEN_id "(" LISTAARG? ")" "{" VARDECL SEQCOMANDOS "}"
@@ -174,59 +171,20 @@ void ListaExp() :
 void Func() :
 {}
 {
-  FuncStart() FuncRest()
+  (<FUNCTION> Tipo() <TOKEN_ID> <APARENTESES> (ListaArg())? <FPARENTESES> <ACHAVES> Vardecl() SeqComandos() <FCHAVES>)+ 
 }
 
-
-void FuncStart() :
-{}
-{
-  <FUNCTION> Tipo() TokenID() <APARENTESES> (ListaArg())? <FPARENTESES> <ACHAVES> (Vardecl() | "") SeqComandos() <FCHAVES>
-}
-
-
-void FuncRest() :
-{}
-{
-  (FuncStart() FuncRest())?
-}
 
 // LISTAARG -> TIPO TOKEN_id ("," TIPO TOKEN_id)*
 void ListaArg() :
 {}
 {
-  Tipo() TokenID() (<VIRGULA> Tipo() TokenID() )*
+  Tipo() <TOKEN_ID> (ListaArgL())
 }
 
-// facao_opcional -> (.digitos)?
-void Facao_Opcional() :
+void ListaArgL() : 
 {}
 {
-  (<PONTO> Digitos())?
+  (<VIRGULA> Tipo() <TOKEN_ID> ListaArgL())?
 }
 
-// digitos -> digito+
-void Digitos() :
-{}
-{
-  (<NUM>)+
-}
-
-// expoente_opcional -> (E (+ | -)? digitos)?
-void Expoente_Opcional() :
-{}
-{
-  ("E" (<SOMA> | <SUB>)? Digitos())?
-}
-
-void NumLiteral() :
-{}
-{
-  Digitos() Facao_Opcional() (Expoente_Opcional() | "")
-}
-
-void ReadInput() :
-{}
-{
-  <ID>
-}
