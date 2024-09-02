@@ -1,0 +1,12 @@
+void main(){
+    newVar bool novoTeste;
+    newVar float novoTeste;
+    newVar float novoTeste2 
+    novoTesteInt = 10.22;
+    novoTeste2 = 30.20; 
+    novoTeste + novoTeste2;
+    novoTeste / novoTeste;
+    novoTeste = true; 
+    printOut novoTesteInt; 
+    printOut novoTeste;
+}

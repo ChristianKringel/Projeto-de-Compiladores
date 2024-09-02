@@ -34,30 +34,9 @@ public class Karloff implements KarloffConstants {
 
   static final public void Comando() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case CARACTERE:{
-      TokenID();
-      jj_consume_token(IGUAL);
-      Exp();
-      jj_consume_token(PONTOVIRGULA);
-      break;
-      }{
-      TokenID();
-      jj_consume_token(APARENTESES);
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case APARENTESES:
-      case TRUE:
-      case FALSE:
-      case NUM:
-      case CARACTERE:{
-        ListaExp();
-        break;
-        }
-      default:
-        jj_la1[1] = jj_gen;
-        ;
-      }
-      jj_consume_token(FPARENTESES);
-      jj_consume_token(PONTOVIRGULA);
+    case TOKEN_ID:{
+      jj_consume_token(TOKEN_ID);
+      ComandoL();
       break;
       }
     case IF:{
@@ -78,14 +57,6 @@ public class Karloff implements KarloffConstants {
       jj_consume_token(FCHAVES);
       jj_consume_token(PONTOVIRGULA);
       break;
-      }{
-      TokenID();
-      jj_consume_token(IGUAL);
-      ReadInput();
-      jj_consume_token(APARENTESES);
-      jj_consume_token(FPARENTESES);
-      jj_consume_token(PONTOVIRGULA);
-      break;
       }
     case RETURN:{
       jj_consume_token(RETURN);
@@ -100,7 +71,65 @@ public class Karloff implements KarloffConstants {
       break;
       }
     default:
-      jj_la1[2] = jj_gen;
+      jj_la1[1] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  static final public void ComandoL() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case ATRIBUICAO:{
+      jj_consume_token(ATRIBUICAO);
+      ComandoLL();
+      break;
+      }
+    case APARENTESES:{
+      jj_consume_token(APARENTESES);
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case APARENTESES:
+      case TRUE:
+      case FALSE:
+      case TOKEN_LITERAL:
+      case TOKEN_ID:{
+        ListaExp();
+        break;
+        }
+      default:
+        jj_la1[2] = jj_gen;
+        ;
+      }
+      jj_consume_token(FPARENTESES);
+      jj_consume_token(PONTOVIRGULA);
+      break;
+      }
+    default:
+      jj_la1[3] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  static final public void ComandoLL() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case APARENTESES:
+    case TRUE:
+    case FALSE:
+    case TOKEN_LITERAL:
+    case TOKEN_ID:{
+      Exp();
+      jj_consume_token(PONTOVIRGULA);
+      break;
+      }
+    case READINPUT:{
+      jj_consume_token(READINPUT);
+      jj_consume_token(APARENTESES);
+      jj_consume_token(FPARENTESES);
+      jj_consume_token(PONTOVIRGULA);
+      break;
+      }
+    default:
+      jj_la1[4] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -116,12 +145,12 @@ public class Karloff implements KarloffConstants {
         break;
         }
       default:
-        jj_la1[3] = jj_gen;
+        jj_la1[5] = jj_gen;
         break label_1;
       }
       jj_consume_token(NEWVAR);
       Tipo();
-      TokenID();
+      jj_consume_token(TOKEN_ID);
       jj_consume_token(PONTOVIRGULA);
     }
   }
@@ -133,9 +162,8 @@ public class Karloff implements KarloffConstants {
       jj_consume_token(FLOAT);
       break;
       }
-    case TRUE:
-    case FALSE:{
-      Boolean();
+    case BOOLEAN:{
+      jj_consume_token(BOOLEAN);
       break;
       }
     case VOID:{
@@ -143,7 +171,7 @@ public class Karloff implements KarloffConstants {
       break;
       }
     default:
-      jj_la1[4] = jj_gen;
+      jj_la1[6] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -160,7 +188,7 @@ public class Karloff implements KarloffConstants {
       break;
       }
     default:
-      jj_la1[5] = jj_gen;
+      jj_la1[7] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -170,20 +198,20 @@ public class Karloff implements KarloffConstants {
   static final public void SeqComandos() throws ParseException {
     label_2:
     while (true) {
+      Comando();
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case PRINTOUT:
       case WHILE:
       case IF:
       case RETURN:
-      case CARACTERE:{
+      case TOKEN_ID:{
         ;
         break;
         }
       default:
-        jj_la1[6] = jj_gen;
+        jj_la1[8] = jj_gen;
         break label_2;
       }
-      Comando();
     }
   }
 
@@ -200,45 +228,27 @@ public class Karloff implements KarloffConstants {
       }
     case TRUE:
     case FALSE:
-    case NUM:
-    case CARACTERE:{
+    case TOKEN_LITERAL:
+    case TOKEN_ID:{
       Fator();
       break;
       }
     default:
-      jj_la1[7] = jj_gen;
+      jj_la1[9] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
   }
 
-// FATOR -> TOKEN_id | TOKEN_id "(" LISTAEXP? ")" | TOKEN_numliteral | "true" | "false"
   static final public void Fator() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case CARACTERE:{
-      TokenID();
-      break;
-      }{
-      TokenID();
-      jj_consume_token(APARENTESES);
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case APARENTESES:
-      case TRUE:
-      case FALSE:
-      case NUM:
-      case CARACTERE:{
-        ListaExp();
-        break;
-        }
-      default:
-        jj_la1[8] = jj_gen;
-        ;
-      }
-      jj_consume_token(FPARENTESES);
+    case TOKEN_ID:{
+      jj_consume_token(TOKEN_ID);
+      FatorL();
       break;
       }
-    case NUM:{
-      NumLiteral();
+    case TOKEN_LITERAL:{
+      jj_consume_token(TOKEN_LITERAL);
       break;
       }
     case TRUE:{
@@ -250,77 +260,23 @@ public class Karloff implements KarloffConstants {
       break;
       }
     default:
-      jj_la1[9] = jj_gen;
+      jj_la1[10] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
   }
 
-// TOKEN_id -> letra letraoudigito* finalsublinhado*
-  static final public void TokenID() throws ParseException {
-    jj_consume_token(CARACTERE);
-    label_3:
-    while (true) {
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case NUM:
-      case CARACTERE:{
-        ;
-        break;
-        }
-      default:
-        jj_la1[10] = jj_gen;
-        break label_3;
-      }
-      LetraOuDigito();
-    }
-    label_4:
-    while (true) {
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case SUBLINHADO:{
-        ;
-        break;
-        }
-      default:
-        jj_la1[11] = jj_gen;
-        break label_4;
-      }
-      FinalSublinhado();
-    }
-  }
-
-  static final public void LetraOuDigito() throws ParseException {
+  static final public void FatorL() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case CARACTERE:{
-      jj_consume_token(CARACTERE);
-      break;
-      }
-    case NUM:{
-      jj_consume_token(NUM);
+    case APARENTESES:{
+      jj_consume_token(APARENTESES);
+      ListaExp();
+      jj_consume_token(FPARENTESES);
       break;
       }
     default:
-      jj_la1[12] = jj_gen;
-      jj_consume_token(-1);
-      throw new ParseException();
-    }
-  }
-
-// finalsublinhado -> _letraoudigito+
-  static final public void FinalSublinhado() throws ParseException {
-    jj_consume_token(SUBLINHADO);
-    label_5:
-    while (true) {
-      LetraOuDigito();
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case NUM:
-      case CARACTERE:{
-        ;
-        break;
-        }
-      default:
-        jj_la1[13] = jj_gen;
-        break label_5;
-      }
+      jj_la1[11] = jj_gen;
+      ;
     }
   }
 
@@ -364,7 +320,7 @@ public class Karloff implements KarloffConstants {
       break;
       }
     default:
-      jj_la1[14] = jj_gen;
+      jj_la1[12] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -373,19 +329,20 @@ public class Karloff implements KarloffConstants {
 // LISTAEXP -> EXP | LISTAEXP "," EXP
   static final public void ListaExp() throws ParseException {
     Exp();
-    label_6:
-    while (true) {
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case VIRGULA:{
-        ;
-        break;
-        }
-      default:
-        jj_la1[15] = jj_gen;
-        break label_6;
-      }
+    ListaExpL();
+  }
+
+  static final public void ListaExpL() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case VIRGULA:{
       jj_consume_token(VIRGULA);
       Exp();
+      ListaExpL();
+      break;
+      }
+    default:
+      jj_la1[13] = jj_gen;
+      ;
     }
   }
 
@@ -393,144 +350,60 @@ public class Karloff implements KarloffConstants {
 // | "fun" TIPO TOKEN_id "(" LISTAARG? ")" "{" VARDECL SEQCOMANDOS "}"
   static final public 
 void Func() throws ParseException {
-    FuncStart();
-    FuncRest();
-  }
-
-  static final public void FuncStart() throws ParseException {
-    jj_consume_token(FUNCTION);
-    Tipo();
-    TokenID();
-    jj_consume_token(APARENTESES);
-    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case VOID:
-    case FLOAT:
-    case TRUE:
-    case FALSE:{
-      ListaArg();
-      break;
+    label_3:
+    while (true) {
+      jj_consume_token(FUNCTION);
+      Tipo();
+      jj_consume_token(TOKEN_ID);
+      jj_consume_token(APARENTESES);
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case VOID:
+      case FLOAT:
+      case BOOLEAN:{
+        ListaArg();
+        break;
+        }
+      default:
+        jj_la1[14] = jj_gen;
+        ;
       }
-    default:
-      jj_la1[16] = jj_gen;
-      ;
-    }
-    jj_consume_token(FPARENTESES);
-    jj_consume_token(ACHAVES);
-    Vardecl();
-    SeqComandos();
-    jj_consume_token(FCHAVES);
-  }
-
-  static final public void FuncRest() throws ParseException {
-    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case FUNCTION:{
-      FuncStart();
-      FuncRest();
-      break;
+      jj_consume_token(FPARENTESES);
+      jj_consume_token(ACHAVES);
+      Vardecl();
+      SeqComandos();
+      jj_consume_token(FCHAVES);
+      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+      case FUNCTION:{
+        ;
+        break;
+        }
+      default:
+        jj_la1[15] = jj_gen;
+        break label_3;
       }
-    default:
-      jj_la1[17] = jj_gen;
-      ;
     }
   }
 
 // LISTAARG -> TIPO TOKEN_id ("," TIPO TOKEN_id)*
   static final public void ListaArg() throws ParseException {
     Tipo();
-    TokenID();
-    label_7:
-    while (true) {
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case VIRGULA:{
-        ;
-        break;
-        }
-      default:
-        jj_la1[18] = jj_gen;
-        break label_7;
-      }
+    jj_consume_token(TOKEN_ID);
+    ListaArgL();
+  }
+
+  static final public void ListaArgL() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case VIRGULA:{
       jj_consume_token(VIRGULA);
       Tipo();
-      TokenID();
-    }
-  }
-
-// facao_opcional -> (.digitos)?
-  static final public void Facao_Opcional() throws ParseException {
-    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case PONTO:{
-      jj_consume_token(PONTO);
-      Digitos();
+      jj_consume_token(TOKEN_ID);
+      ListaArgL();
       break;
       }
     default:
-      jj_la1[19] = jj_gen;
+      jj_la1[16] = jj_gen;
       ;
     }
-  }
-
-// digitos -> digito+
-  static final public void Digitos() throws ParseException {
-    label_8:
-    while (true) {
-      jj_consume_token(NUM);
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case NUM:{
-        ;
-        break;
-        }
-      default:
-        jj_la1[20] = jj_gen;
-        break label_8;
-      }
-    }
-  }
-
-// expoente_opcional -> (E (+ | -)? digitos)?
-  static final public void Expoente_Opcional() throws ParseException {
-    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case 39:{
-      jj_consume_token(39);
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case SOMA:
-      case SUB:{
-        switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-        case SOMA:{
-          jj_consume_token(SOMA);
-          break;
-          }
-        case SUB:{
-          jj_consume_token(SUB);
-          break;
-          }
-        default:
-          jj_la1[21] = jj_gen;
-          jj_consume_token(-1);
-          throw new ParseException();
-        }
-        break;
-        }
-      default:
-        jj_la1[22] = jj_gen;
-        ;
-      }
-      Digitos();
-      break;
-      }
-    default:
-      jj_la1[23] = jj_gen;
-      ;
-    }
-  }
-
-  static final public void NumLiteral() throws ParseException {
-    Digitos();
-    Facao_Opcional();
-    Expoente_Opcional();
-  }
-
-  static final public void ReadInput() throws ParseException {
-    jj_consume_token(ID);
   }
 
   static private boolean jj_initialized_once = false;
@@ -543,7 +416,7 @@ void Func() throws ParseException {
   static public Token jj_nt;
   static private int jj_ntk;
   static private int jj_gen;
-  static final private int[] jj_la1 = new int[24];
+  static final private int[] jj_la1 = new int[17];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -551,10 +424,10 @@ void Func() throws ParseException {
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x10000,0xa0c100,0x962000,0x1000,0xcc00,0xc000,0x962000,0xa0c100,0xa0c100,0xa0c000,0xa00000,0x0,0xa00000,0xa00000,0xf8000000,0x0,0xcc00,0x10000,0x0,0x4000000,0x200000,0x18000000,0x18000000,0x0,};
+      jj_la1_0 = new int[] {0x40000,0x584000,0x30200,0x800200,0x30200,0x2000,0x9800,0x30000,0x584000,0x30200,0x30000,0x200,0xfc000000,0x0,0x9800,0x40000,0x0,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x10,0x0,0x0,0xf,0x20,0x0,0x0,0x20,0x0,0x0,0x0,0x0,0x80,};
+      jj_la1_1 = new int[] {0x0,0x40,0x60,0x0,0x68,0x0,0x0,0x0,0x40,0x60,0x60,0x0,0x7,0x10,0x0,0x0,0x10,};
    }
 
   /** Constructor with InputStream. */
@@ -575,7 +448,7 @@ void Func() throws ParseException {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 24; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -589,7 +462,7 @@ void Func() throws ParseException {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 24; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -606,7 +479,7 @@ void Func() throws ParseException {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 24; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -616,7 +489,7 @@ void Func() throws ParseException {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 24; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -632,7 +505,7 @@ void Func() throws ParseException {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 24; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -641,7 +514,7 @@ void Func() throws ParseException {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 24; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
   }
 
   static private Token jj_consume_token(int kind) throws ParseException {
@@ -692,12 +565,12 @@ void Func() throws ParseException {
   /** Generate ParseException. */
   static public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[40];
+    boolean[] la1tokens = new boolean[39];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 24; i++) {
+    for (int i = 0; i < 17; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -709,7 +582,7 @@ void Func() throws ParseException {
         }
       }
     }
-    for (int i = 0; i < 40; i++) {
+    for (int i = 0; i < 39; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

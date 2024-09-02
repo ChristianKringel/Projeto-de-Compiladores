@@ -1,0 +1,27 @@
+void main()
+{
+    newVar float numero; 
+    newVar float resultado; 
+    numero = 10.0; 
+
+    resultado = fatorial numero; 
+    printOut resultado; 
+}
+
+fun fatorial(float n)
+{
+    newVar float resultado; 
+    resultado = 1.0;
+
+    if (n < 0.0)
+    {
+        return 0.0;
+    } 
+    
+    while n > 0.0
+    {
+        resultado = resultado * n; 
+        n = n - 1.0; 
+    }
+    return resultado; 
+}

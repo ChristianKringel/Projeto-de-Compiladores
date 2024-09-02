@@ -9,73 +9,71 @@ public interface KarloffConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int COMMENT = 5;
+  int MAIN = 5;
   /** RegularExpression Id. */
-  int MAIN = 6;
+  int ACHAVES = 6;
   /** RegularExpression Id. */
-  int ACHAVES = 7;
+  int FCHAVES = 7;
   /** RegularExpression Id. */
-  int FCHAVES = 8;
+  int APARENTESES = 8;
   /** RegularExpression Id. */
-  int APARENTESES = 9;
+  int FPARENTESES = 9;
   /** RegularExpression Id. */
-  int FPARENTESES = 10;
+  int VOID = 10;
   /** RegularExpression Id. */
-  int VOID = 11;
+  int FLOAT = 11;
   /** RegularExpression Id. */
-  int FLOAT = 12;
+  int NEWVAR = 12;
   /** RegularExpression Id. */
-  int NEWVAR = 13;
+  int PRINTOUT = 13;
   /** RegularExpression Id. */
-  int PRINTOUT = 14;
+  int TRUE = 14;
   /** RegularExpression Id. */
-  int BOOLEAN = 15;
+  int FALSE = 15;
   /** RegularExpression Id. */
-  int TRUE = 16;
+  int BOOLEAN = 16;
   /** RegularExpression Id. */
-  int FALSE = 17;
+  int FUNCTION = 17;
   /** RegularExpression Id. */
-  int FUNCTION = 18;
+  int WHILE = 18;
   /** RegularExpression Id. */
-  int WHILE = 19;
+  int IF = 19;
   /** RegularExpression Id. */
-  int IF = 20;
+  int THEN = 20;
   /** RegularExpression Id. */
-  int THEN = 21;
+  int RETURN = 21;
   /** RegularExpression Id. */
-  int RETURN = 22;
+  int ATRIBUICAO = 22;
   /** RegularExpression Id. */
-  int ATRIBUICAO = 23;
+  int PONTOVIRGULA = 23;
   /** RegularExpression Id. */
-  int PONTOVIRGULA = 24;
+  int PONTO = 24;
   /** RegularExpression Id. */
-  int PONTO = 25;
+  int SOMA = 25;
   /** RegularExpression Id. */
-  int SOMA = 26;
+  int SUB = 26;
   /** RegularExpression Id. */
-  int SUB = 27;
+  int MULT = 27;
   /** RegularExpression Id. */
-  int MULT = 28;
+  int DIV = 28;
   /** RegularExpression Id. */
-  int DIV = 29;
+  int AND = 29;
   /** RegularExpression Id. */
-  int AND = 30;
+  int OR = 30;
   /** RegularExpression Id. */
-  int OR = 31;
+  int MAIORQUE = 31;
   /** RegularExpression Id. */
-  int MAIORQUE = 32;
+  int MENORQUE = 32;
   /** RegularExpression Id. */
-  int MENORQUE = 33;
+  int IGUAL = 33;
   /** RegularExpression Id. */
-  int IGUAL = 34;
+  int READINPUT = 34;
   /** RegularExpression Id. */
-  int READINPUT = 35;
+  int VIRGULA = 35;
   /** RegularExpression Id. */
-  int VIRGULA = 36;
+  int TOKEN_LITERAL = 36;
   /** RegularExpression Id. */
-  int TOKEN_LITERAL = 37;
-  /** RegularExpression Id. */
-  int TOKEN_ID = 38;
+  int TOKEN_ID = 37;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -87,7 +85,6 @@ public interface KarloffConstants {
     "\"\\t\"",
     "\"\\n\"",
     "\"\\r\"",
-    "<COMMENT>",
     "\"main\"",
     "\"{\"",
     "\"}\"",
@@ -97,9 +94,9 @@ public interface KarloffConstants {
     "\"float\"",
     "\"newVar\"",
     "\"printOut\"",
-    "\"bool\"",
     "\"true\"",
     "\"false\"",
+    "\"bool\"",
     "\"fun\"",
     "\"while\"",
     "\"if\"",

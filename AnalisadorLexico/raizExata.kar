@@ -1,0 +1,51 @@
+void main(){
+    newVar float teste;
+    newVar float teste2;
+    newVar float teste3;
+    newVar bool isExact1;
+    newVar bool isExact2;
+    newVar bool isExact3;
+
+    teste = 2E2; 
+    teste2 = 2E-2;
+    teste3 = 2.0E2;
+    isExact = isExactSquareRoot(teste);
+    isExact2 = isExactSquareRoot(teste2);
+    isExact3 = isExactSquareRoot(teste3);
+
+    printOut isExact;
+    printOut isExact2;
+    printOut isExact3;
+}
+
+// func para verificar se a raiz quadrada eh exata
+fun bool isExactSquareRoot(float number) {
+    newVar float sqrtValue;
+    newVar float epsilon;
+    newVar float squared;
+
+    sqrtValue = sqrt(number);
+
+    epsilon = 0.0001;
+
+    squared = (sqrtValue * sqrtValue);
+
+    return ((number - squared) < epsilon);
+}
+
+// func para calcular a raiz quadrada usando o metodo de Newton
+fun float sqrt(float number) {
+    newVar float guess;
+    newVar float epsilon;
+    newVar float quotient;
+
+    guess = (number / 2); // chute inicial
+    epsilon = 0.0001;   // tol para a aproximação
+
+    while (((guess - (number / guess)) > epsilon) | (((number / guess) - guess) > epsilon)) {
+        quotient = (number / guess);
+        guess = ((guess + quotient) / 2);
+    };
+
+    return guess;
+}

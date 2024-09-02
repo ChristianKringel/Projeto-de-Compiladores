@@ -1,0 +1,52 @@
+void main() {
+    newVar float x1;
+    newVar float y1;
+    newVar float x2;
+    newVar float y2;
+    newVar float dist;
+
+    // entrada para os valores de  x1, y1, x2, y2
+    x1 = readInput(); 
+    y1 = readInput();
+    x2 = readInput();
+    y2 = readInput(); 
+
+    // func que calcula a dist euclidiana
+    dist = euclideanDistance(x1, y1, x2, y2);
+
+    
+    printOut dist;
+}
+
+// func para calcular a dist euclidiana
+fun float euclideanDistance(float x1, float y1, float x2, float y2) {
+    newVar float dx;
+    newVar float dy;
+    newVar float sum;
+
+    dx = (x2 - x1);      
+    dy = (y2 - y1);     
+    sum = ((dx * dx) + (dy * dy)); 
+
+    // retorna a raiz quadrada da soma
+    return sqrt(sum);
+}
+
+// func para calcular a raiz quadrada usando o metodo de Newton
+// Se f(x)=x^1/2, podemos definir y := f(x), então y2 = x. xk+1 = (0.5)*(xk + x/xk) (5). 
+fun float sqrt(float number) {
+    newVar float guess;
+    newVar float epsilon;
+    newVar float quotient;
+
+
+    guess = (number / 2); // chute inicial
+    epsilon = 0.0001;   // tolerancia para a aproximacao
+
+    while (((guess - (number / guess)) > epsilon) | (((number / guess) - guess) > epsilon)) {
+        quotient = (number / guess);
+        guess = ((guess + quotient) / 2);
+    };
+
+    return guess;
+}
