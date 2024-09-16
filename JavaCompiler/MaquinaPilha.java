@@ -1,62 +1,59 @@
 import java.io.*;
 import java.util.*;
 
-public class MaquinaPilha {
-    private Stack<Integer> pilha;
+class MaquinaPilha {
+    BufferedReader arquivo;
 
-    public MaquinaPilha() {
-        pilha = new Stack<>();
+    public MaquinaPilha(String arqv) throws Exception{
+        this.arquivo = new BufferedReader(new FileReader(arqv));
     }
 
-    public void readInstructions(String arquivo) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(arquivo));
-        String row;
-        while ((row = reader.readLine()) != null)
-            executeInstruction(row);
-        reader.close();
-    }
+    public Integer executeInstruction() throws Exception{
+        String instruction;
+        Stack<Integer> pilha = new Stack<Integer>();
+        
 
-    public int executeInstruction(String instruction){
+    while((instruction = arquivo.readLine()) != null){
         String[] parts = instruction.split(" ");
-        String command = parts[0];
-
-        switch (command) {
+        for(String token : parts){
+            //System.out.println(token);
+        switch (token) {
             case "PUSH":
-                int valor = Integer.parseInt(parts[1]);
-                pilha.push(valor);
+                pilha.push(Integer.parseInt(parts[1]));
                 break;
-
-            case "POP":
-                pilha.pop();
-
-            case "+":
+            case "SUM":
                 int a = pilha.pop();
                 int b = pilha.pop();
-                return pilha.push(a + b);
+                pilha.push(a + b);
+                break;
 
-            case "-":
+            case "SUB":
                 a = pilha.pop();
                 b = pilha.pop();
-                return pilha.push(a - b);
+                pilha.push(b - a);
+                break;
 
-            case "*":
+            case "MULT":
                 a = pilha.pop();
                 b = pilha.pop();
-                return pilha.push(a * b);
+                pilha.push(a * b);
+                break;
 
-            case "/":
+            case "DIV":
                 a = pilha.pop();
                 b = pilha.pop();
-                if (a == 0)
-                    // throw new Exception("Divisão por zero");
-                return pilha.push(a / b);
+                pilha.push(b / a);
+                break;
+            case "PRINT":
+                //System.out.println(pilha.peek());
+                return (Integer)pilha.pop();
 
             default: 
-                System.out.println("Erro");
-                return 0;
-                //throw new Exception("Operador desconhecido");
-
+                break;
+                }
+            }
+        
         }
-
+    return 1;
     }
 }

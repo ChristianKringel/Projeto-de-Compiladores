@@ -21,12 +21,12 @@ class CodeGen{
 	if (arv instanceof Div)
 		return (geraCodigo2(((Div) arv).arg1) +
 				geraCodigo2(((Div) arv).arg2) +
-				"Div\n");
+				"DIV\n");
 
 	if (arv instanceof Sub)
 		return (geraCodigo2(((Sub) arv).arg1) +
 				geraCodigo2(((Sub) arv).arg2) +
-				"Sub\n");
+				"SUB\n");
 
 	if (arv instanceof Num)
 		return ("PUSH "  + ((Num) arv).num + "\n");
