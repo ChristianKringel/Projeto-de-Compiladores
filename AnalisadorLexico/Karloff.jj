@@ -1,10 +1,14 @@
 PARSER_BEGIN(Karloff)
 import java.io.*;
+import ast.*;
 public class Karloff {
 
   public static void main(String args[]) throws ParseException, IOException {
-    Karloff analisador = new Karloff(new FileInputStream(args[0]));
-    analisador.Karloff();
+    //Karloff analisador = new Karloff(new FileInputStream(args[0]));
+    //analisador.Karloff();
+    FileInputStream fs = new FileInputStream(new File(args[0]));
+    Prog arvore =parser.Karloff();
+    geraCodigo(arvore, args[0])
   }
 
 }
@@ -56,58 +60,76 @@ TOKEN :
 | <TOKEN_ID: ["a"-"z","A"-"Z"] (["a"-"z","A"-"Z"]|["0"-"9"])*((["a"-"z","A"-"Z"]|["0"-"9"])+)* ("_")*>
 }
 
-void Karloff() :
-{Token t;}
+Prog Karloff() :
+{Main main;ArrayList<Func> funs=null;}
 {
-  Main() (Func())?
+  main = Main() (funs=Func())?
+  {return new Prog(main,funs);}
 }
 
-void Main() :
-{}
+Main Main() :
+{ArrayList<Comando> comandos; ArrayList<VarDecl> vars;}
 {
-  <VOID> <MAIN> <APARENTESES> <FPARENTESES> <ACHAVES> Vardecl() SeqComandos() <FCHAVES>
+  <VOID> <MAIN> <APARENTESES> <FPARENTESES> <ACHAVES> vars=Vardecl() comandos = SeqComandos() <FCHAVES>
+
+  {return new Main(vars,comandos);}
+  
 }
 
-void Comando() :
-{}
+Comando Comando() :
+{Comando resultado;Comando comando;} 
 {
-    <TOKEN_ID> ComandoL() // rep aq
-    | <IF> Exp() <THEN> <ACHAVES> SeqComandos() <FCHAVES> <PONTOVIRGULA>
+    (<TOKEN_ID> comando=ComandoL() // rep aq {
+      
+      if(comando instanceof CAtribuicao)
+      {
+
+      }
+      resultado = ???})
+
+    | (<IF> Exp() <THEN> <ACHAVES> SeqComandos() <FCHAVES> <PONTOVIRGULA> {resultado = ??;})
     | <WHILE> Exp() <ACHAVES> SeqComandos() <FCHAVES> <PONTOVIRGULA>
     | <RETURN> Exp() <PONTOVIRGULA>
     | <PRINTOUT> Exp() <PONTOVIRGULA> 
+
+    {return resultado;}
 }
 
-void ComandoL() :
-{}
+Comando ComandoL() :
+{Comando resp;}
 {
-  <ATRIBUICAO> ComandoLL() | <APARENTESES> (ListaExp())? <FPARENTESES> <PONTOVIRGULA> // rep aq
+  <ATRIBUICAO> resp=ComandoLL() | <APARENTESES> (ListaExp())? <FPARENTESES> <PONTOVIRGULA> {resp = new CChamada}// rep aq
 }
 
 void ComandoLL() : 
-{}
+{Comando result;Exp exp;}
 {
-  Exp() <PONTOVIRGULA> | <READINPUT> <APARENTESES> <FPARENTESES> <PONTOVIRGULA>
+  exp = Exp() <PONTOVIRGULA> {result = new CAtribuicao(0,"",exp);}| <READINPUT> <APARENTESES> <FPARENTESES> <PONTOVIRGULA>
 }
 
 // VARDECL -> ("newVar" TIPO TOKEN_id ";")*
-void Vardecl() :
-{}
+ArrayList<VarDecl> Vardecl() :
+{ArrayList<VarDecl> vars = new ArrayList<VarDecl>(); String tipo; Token var;}
 {
-  (<NEWVAR> Tipo() <TOKEN_ID> <PONTOVIRGULA>)*
+  (<NEWVAR> tipo = Tipo() var=<TOKEN_ID> <PONTOVIRGULA> {vars.add(new VarDecl(tipo,var.image));})*
+  {return Vardecl}
 }
 
 // TIPO -> "float" | "boolean" | "void"
-void Tipo() :
-{}
+String Tipo() :
+{Token tipo;}
 {
-  (<FLOAT> | <BOOLEAN> | <VOID>)
+  (tipo=<FLOAT> | tipo=<BOOLEAN> | tipo=<VOID>)
+
+{return tipo.image;}
+
 }
 
-void Boolean() :
-{}
+Exp Boolean() :
+{Token result;}
 {
-  <TRUE> | <FALSE>
+  result = <TRUE> | result = <FALSE>
+  {return result.image;}
 }
 
 
@@ -120,7 +142,7 @@ void SeqComandos() :
 
 
 // EXP -> "(" EXP OP EXP ")" | FATOR
-void Exp() :
+Exp Exp() :
 {}
 {
   <APARENTESES> Exp() Op() Exp() <FPARENTESES> | Fator()
